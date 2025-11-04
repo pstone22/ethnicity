@@ -100,6 +100,9 @@ E -->|No| G[Person's ethnicity = most **recent** recorded ethnic category]
 - Where there are multiple ethnicities with the same frequency and most recent date, CPRD choose the ethnicity that occurs most frequently in the 2021 England and Wales census. I'm not sure I agree with this and therefore haven't implemented this, which means Stata will choose one at random in my method, meaning that different counts could be obtained each time the algorithm is run.
 - CPRD choose the second most commonly recorded ethnic group if "Other" is the most frequently recorded ethnic group. I have not done this because I don't think it is a reasonable thing to do at all.
 
+### Data completeness
+Ethnicity completeness was >80% for a cohort of people with severe mentall illness and a cohort of people with dementia
+
 ### Example Stata code
 Do file available [here](stata/ethnicity_algorithm.do).
 ```stata
