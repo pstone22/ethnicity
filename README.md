@@ -98,7 +98,7 @@ E -->|No| G[Person's ethnicity = most **recent** recorded ethnic category]
 - Different codelist (I am guessing [this](https://static-content.springer.com/esm/art%3A10.1186%2Fs12963-023-00302-0/MediaObjects/12963_2023_302_MOESM3_ESM.docx) is CPRD's codelist (from [Shiekh et al., 2023](https://doi.org/10.1186/s12963-023-00302-0)) but categorisation is not included)
 - It's not clear from how CPRD have described it, but I think CPRD choose most recent of the most commonly recorded ethnicities
 - Where there are multiple ethnicities with the same frequency and most recent date, CPRD choose the ethnicity that occurs most frequently in the 2021 England and Wales census. I'm not sure I agree with this and therefore haven't implemented this, which means Stata will choose one at random in my method, meaning that different counts could be obtained each time the algorithm is run.
-- CPRD choose the second most commonly recorded ethnic grop if "Other" is the most frequently recorded ethnic group. I have not done this because I don't think it is a reasonable thing to do at all.
+- CPRD choose the second most commonly recorded ethnic group if "Other" is the most frequently recorded ethnic group. I have not done this because I don't think it is a reasonable thing to do at all.
 
 ### Example Stata code
 Do file available [here](stata/ethnicity_algorithm.do).
