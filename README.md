@@ -1,5 +1,9 @@
 # How to retrieve ethnicity from UK primary care data
 
+## Problem
+- CPRD data = expensive
+- this method = free alternative
+
 ## Ethnicity codelist creation
 
 ```mermaid
@@ -90,15 +94,20 @@ E -->|No| G[Person's ethnicity = most **recent** recorded ethnic category]
 4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity is chosen (even if different from most common groups), otherwise the most commonly recorded ethnicity is selected as the persons ethicity (similar to [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf))
 
 ### Considerations
-- Does having no limitation on date of ethnicity record seem acceptable? Can mean we effectively end up looking into the future, but allows for more complete data.
-- Does choosing most recent ethnicity (with assumption that most recent is probably most accurate) seem reasonable even if it differs from the most commonly recorded ethnicities?
+- Does having no limitation on date of ethnicity record seem acceptable? Can mean we effectively end up looking into the future, but allows for more complete data. **Similar to using IMD variable**
+- Does choosing most recent ethnicity (with assumption that most recent is probably most accurate) seem reasonable even if it differs from the most commonly recorded ethnicities? **No, will change this**
 
 ### Differences from [CPRD's algorithm](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)
+- **change method to replicate exactly CPRD so we get same ethnicity every run of algorithm**
 - No HES data (primary care data only)
 - Different codelist (I am guessing [this](https://static-content.springer.com/esm/art%3A10.1186%2Fs12963-023-00302-0/MediaObjects/12963_2023_302_MOESM3_ESM.docx) is CPRD's codelist (from [Shiekh et al., 2023](https://doi.org/10.1186/s12963-023-00302-0)) but categorisation is not included)
 - It's not clear from how CPRD have described it, but I think CPRD choose most recent of the most commonly recorded ethnicities
 - Where there are multiple ethnicities with the same frequency and most recent date, CPRD choose the ethnicity that occurs most frequently in the 2021 England and Wales census. I'm not sure I agree with this and therefore haven't implemented this, which means Stata will choose one at random in my method, meaning that different counts could be obtained each time the algorithm is run.
 - CPRD choose the second most commonly recorded ethnic group if "Other" is the most frequently recorded ethnic group. I have not done this because I don't think it is a reasonable thing to do at all.
+
+### Implications of algorithm
+- mention about timeframe (all data used)
+- will need to think about how to use variable dependent on whether exposure or covariate, esp wrt missing data
 
 ### Data completeness
 Ethnicity completeness was >80% for a cohort of people with severe mentall illness and a cohort of people with dementia
