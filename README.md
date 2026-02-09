@@ -91,7 +91,8 @@ E -->|No| G[Person's ethnicity = most **recent** recorded ethnic category]
 1. First merge the [ethnicity codelist](stata/ethnicity.csv) with the CPRD Aurum Observation file and keep all resulting matches to generate a long file of all ethnicity codes for patients in your cohort.
 2. Merge the long file of all ethnicity codes with the CPRD Aurum Patient file, keeping matches.
 3. Determine most commonly recorded ethnic category for each individual with *no limitation* on date (can be recorded in past or future).
-4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity is chosen (even if different from most common groups), otherwise the most commonly recorded ethnicity is selected as the persons ethicity (similar to [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf))
+4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity (of the most frequently recorded ethnic groups) is chosen, otherwise the most commonly recorded ethnicity is selected as the persons ethicity (similar to [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
+5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the ONS census is selected.
 
 ### Considerations
 - Does having no limitation on date of ethnicity record seem acceptable? Can mean we effectively end up looking into the future, but allows for more complete data. **Similar to using IMD variable**
