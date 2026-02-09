@@ -91,19 +91,15 @@ E -->|No| G[Person's ethnicity = most **recent** recorded ethnic category]
 1. First merge the [ethnicity codelist](stata/ethnicity.csv) with the CPRD Aurum Observation file and keep all resulting matches to generate a long file of all ethnicity codes for patients in your cohort.
 2. Merge the long file of all ethnicity codes with the CPRD Aurum Patient file, keeping matches.
 3. Determine most commonly recorded ethnic category for each individual with *no limitation* on date (can be recorded in past or future).
-4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity (of the most frequently recorded ethnic groups) is chosen, otherwise the most commonly recorded ethnicity is selected as the persons ethicity (similar to [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
-5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the ONS census is selected.
+4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity (of the most frequently recorded ethnic groups) is chosen, otherwise the most commonly recorded ethnicity is selected as the persons ethicity.
+5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the 2021 England and Wales census is selected  (should be the same as [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
 
 ### Considerations
-- Does having no limitation on date of ethnicity record seem acceptable? Can mean we effectively end up looking into the future, but allows for more complete data. **Similar to using IMD variable**
-- Does choosing most recent ethnicity (with assumption that most recent is probably most accurate) seem reasonable even if it differs from the most commonly recorded ethnicities? **No, will change this**
+- Uses all data available for a patient, therefore may end up looking into the future relative to study period.
 
 ### Differences from [CPRD's algorithm](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)
-- **change method to replicate exactly CPRD so we get same ethnicity every run of algorithm**
 - No HES data (primary care data only)
 - Different codelist (I am guessing [this](https://static-content.springer.com/esm/art%3A10.1186%2Fs12963-023-00302-0/MediaObjects/12963_2023_302_MOESM3_ESM.docx) is CPRD's codelist (from [Shiekh et al., 2023](https://doi.org/10.1186/s12963-023-00302-0)) but categorisation is not included)
-- It's not clear from how CPRD have described it, but I think CPRD choose most recent of the most commonly recorded ethnicities
-- Where there are multiple ethnicities with the same frequency and most recent date, CPRD choose the ethnicity that occurs most frequently in the 2021 England and Wales census. I'm not sure I agree with this and therefore haven't implemented this, which means Stata will choose one at random in my method, meaning that different counts could be obtained each time the algorithm is run.
 - CPRD choose the second most commonly recorded ethnic group if "Other" is the most frequently recorded ethnic group. I have not done this because I don't think it is a reasonable thing to do at all.
 
 ### Implications of algorithm
