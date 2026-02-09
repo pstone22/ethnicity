@@ -22,7 +22,6 @@ preserve
 	gsort pracid patid eth5_date
 
 	label list eth5
-	drop if eth5 == 6  //"Not stated" isn't useful
 	generate byte white = 1 if eth5 == 1
 	generate byte south_asian = 1 if eth5 == 2
 	generate byte black = 1 if eth5 == 3
