@@ -123,47 +123,51 @@ preserve
 	keep if _merge == 3
 	drop _merge medcodeid
 
+	gsort pracid patid eth5_date
+
 	label list eth5
 	drop if eth5 == 6  //"Not stated" isn't useful
-	
-	//Generate binary variables for each of the 5 ethnicity groups
 	generate byte white = 1 if eth5 == 1
 	generate byte south_asian = 1 if eth5 == 2
 	generate byte black = 1 if eth5 == 3
 	generate byte other = 1 if eth5 == 4
 	generate byte mixed = 1 if eth5 == 5
 
-	//Generate count for each of the ethnicity categories
-	by pracid patid: egen white_total = count(white)
-	by pracid patid: egen sa_total = count(south_asian)
-	by pracid patid: egen black_total = count(black)
-	by pracid patid: egen other_total = count(other)
-	by pracid patid: egen mixed_total = count(mixed)
-	
-	//Limit to one row per perseon, keeping the most recent ethnicity code
-	gsort pracid patid -eth5_date
-	by pracid patid: keep if _n == 1
-	
-	//Generate variable for the count of most commonly recorded ethnicity/ies
-	egen highestcount = rowmax(white_total sa_total black_total other_total mixed_total)
+	//Date of most recent code for each ethnicity category
+	by pracid patid: egen white_recent = max(eth5_date) if white == 1
+	by pracid patid: egen south_asian_recent = max(eth5_date) if south_asian == 1
+	by pracid patid: egen black_recent = max(eth5_date) if black == 1
+	by pracid patid: egen other_recent = max(eth5_date) if other == 1
+	by pracid patid: egen mixed_recent = max(eth5_date) if mixed == 1
+	format %td *_recent
 
-	//Generate new ethnicity variable which takes most commonly recorded ethnicity
-	generate byte ethnicity = .
-	label values ethnicity eth5
-	replace ethnicity = 1 if white_total == highestcount & highestcount ! = 0
-	replace ethnicity = 2 if sa_total == highestcount & highestcount ! = 0
-	replace ethnicity = 3 if black_total == highestcount & highestcount ! = 0
-	replace ethnicity = 4 if other_total == highestcount & highestcount ! = 0
-	replace ethnicity = 5 if mixed_total == highestcount & highestcount ! = 0
-
-	//If 2 or more groups have same frequency, choose most recent ethnicity code
-	generate byte samecount_count = 0
-	foreach var of varlist white_total sa_total black_total other_total mixed_total {
+	collapse (sum) white_count = white ///
+			south_asian_count = south_asian ///
+			black_count = black ///
+			other_count = other ///
+			mixed_count = mixed ///
+		(max) white_recent south_asian_recent black_recent other_recent mixed_recent, ///
+		by(pracid patid)
 		
-		replace samecount_count = samecount_count + 1 ///
-			if `var' == highestcount & highestcount ! = 0
-	}
-	replace ethnicity = eth5 if samecount_count > 1
+	reshape long @count @recent, i(pracid patid) j(eth) string
+
+	//Make a new ethnicity variable
+	//The order below ensures most common category from census is
+	//used in case of two categories being equally common and recorded on same day
+	generate byte ethnicity = .
+	label define ethnicity 1 "White" 2 "South Asian" 3 "Black" 4 "Mixed" 5 "Other"
+	label values ethnicity ethnicity
+	replace ethnicity = 1 if eth == "white_"
+	replace ethnicity = 2 if eth == "south_asian_"
+	replace ethnicity = 3 if eth == "black_"
+	replace ethnicity = 4 if eth == "mixed_"
+	replace ethnicity = 5 if eth == "other_"
+	tab ethnicity eth, missing
+	drop eth
+
+	gsort pracid patid -count -recent ethnicity
+
+	by pracid patid: keep if _n == 1
 
 	keep pracid patid ethnicity
 	tempfile ethnicity
@@ -171,6 +175,6 @@ preserve
 restore
 merge 1:1 pracid patid using `ethnicity', nogenerate
 recode ethnicity (. = 99)
-label define eth5 99 "Missing", add
+label define ethnicity 99 "Missing", add
 tab ethnicity, missing
 ```
