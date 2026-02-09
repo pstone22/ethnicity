@@ -67,7 +67,7 @@ The [OpenCodelists codelist](https://www.opencodelists.org/codelist/opensafely/e
     1. Black
     1. Other
     1. Mixed
-  - 16-category ethnicit (eth16) labelled as:
+  - 16-category ethnicity (eth16) labelled as:
     1. British
     1. Irish
     1. Other White
@@ -98,13 +98,13 @@ D -->|Select ethnicity| E{Does someone have one ethnic group recorded more commo
 E -->|Yes| F[Person's ethnicity = **most common** recorded ethnic category]
 E -->|No| G{Is one of the most commonly recorded ethnicities recorded more recently than the others?}
 G -->|Yes| H[Person's ethnicity = **most recent commonly** recorded ethnic category]
-G -->|No| I[Person's ethnicity = **most common 2021 England & Wales Census ethnicity of the recent commonly** recorded ethnic categorys]
+G -->|No| I[Person's ethnicity = **most common 2021 England & Wales Census ethnicity of the recent commonly** recorded ethnic categories]
 ```
 
 1. First merge the [ethnicity codelist](stata/ethnicity.csv) with the CPRD Aurum Observation file and keep all resulting matches to generate a long file of all ethnicity codes for patients in your cohort.
 2. Merge the long file of all ethnicity codes with the CPRD Aurum Patient file, keeping matches.
 3. Determine most commonly recorded ethnic category for each individual with *no limitation* on date (can be recorded in past or future).
-4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity (of the most frequently recorded ethnic groups) is chosen, otherwise the most commonly recorded ethnicity is selected as the persons ethicity.
+4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity (of the most frequently recorded ethnic groups) is chosen, otherwise the most commonly recorded ethnicity is selected as the persons ethnicity.
 5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the [2021 England and Wales Census](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021#ethnic-groups-in-england-and-wales) is selected  (should be the same as [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
 
 	![2021 England & Wales Census Ethnicity Category proportions](https://www.ons.gov.uk/visualisations/dvc2203/groupedbarchart/fallback.png)
@@ -119,7 +119,7 @@ G -->|No| I[Person's ethnicity = **most common 2021 England & Wales Census ethni
 - CPRD choose the second most commonly recorded ethnic group if "Other" is the most frequently recorded ethnic group. I have not done this because I don't agree with this decision.
 
 ### Data completeness
-Ethnicity completeness was >80% for a cohort of people with severe mentall illness and a cohort of people with dementia
+Ethnicity completeness was >80% for a cohort of people with severe mental illness and a cohort of people with dementia
 
 ### Example Stata code
 Do file available [here](stata/ethnicity_algorithm.do).
