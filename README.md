@@ -84,27 +84,26 @@ A[Ethnicity codelist] --> B(Merge codelist with CPRD Aurum Observation file to g
 B --> C(Merge list of ethnicity records with CPRD Aurum Patient file)
 C --> D(For each person calculate frequency of each of the 5 high-level ethnic groupings)
 D -->|Select ethnicity| E{Does someone have one ethnic group recorded more commonly than any other?}
-E -->|Yes| F[Person's ethnicity = most **common** recorded ethnic category]
-E -->|No| G[Person's ethnicity = most **recent** recorded ethnic category]
+E -->|Yes| F[Person's ethnicity = **most common** recorded ethnic category]
+E -->|No| G{Is one of the most commonly recorded ethnicities recorded more recently than the others?}
+G -->|Yes| H[Person's ethnicity = **most recent commonly** recorded ethnic category]
+G -->|No| I[Person's ethnicity = **most common 2021 England & Wales Census ethnicity of the recent commonly** recorded ethnic categorys]
 ```
 
 1. First merge the [ethnicity codelist](stata/ethnicity.csv) with the CPRD Aurum Observation file and keep all resulting matches to generate a long file of all ethnicity codes for patients in your cohort.
 2. Merge the long file of all ethnicity codes with the CPRD Aurum Patient file, keeping matches.
 3. Determine most commonly recorded ethnic category for each individual with *no limitation* on date (can be recorded in past or future).
 4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity (of the most frequently recorded ethnic groups) is chosen, otherwise the most commonly recorded ethnicity is selected as the persons ethicity.
-5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the 2021 England and Wales census is selected  (should be the same as [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
+5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the [2021 England and Wales Census](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021) is selected  (should be the same as [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
 
 ### Considerations
 - Uses all data available for a patient, therefore may end up looking into the future relative to study period.
+- You may need to make tweaks to the algorithm based on your usage. Consider the impact of missing data.
 
 ### Differences from [CPRD's algorithm](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)
 - No HES data (primary care data only)
 - Different codelist (I am guessing [this](https://static-content.springer.com/esm/art%3A10.1186%2Fs12963-023-00302-0/MediaObjects/12963_2023_302_MOESM3_ESM.docx) is CPRD's codelist (from [Shiekh et al., 2023](https://doi.org/10.1186/s12963-023-00302-0)) but categorisation is not included)
 - CPRD choose the second most commonly recorded ethnic group if "Other" is the most frequently recorded ethnic group. I have not done this because I don't think it is a reasonable thing to do at all.
-
-### Implications of algorithm
-- mention about timeframe (all data used)
-- will need to think about how to use variable dependent on whether exposure or covariate, esp wrt missing data
 
 ### Data completeness
 Ethnicity completeness was >80% for a cohort of people with severe mentall illness and a cohort of people with dementia
