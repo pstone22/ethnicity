@@ -1,10 +1,17 @@
 # How to retrieve ethnicity from UK primary care data
 
 ## Problem
-- CPRD data = expensive
-- this method = free alternative
+- UK primary care data do not contain a category for ethnicity
+- CPRD provide a [linked dataset for ethnicity](https://www.cprd.com/data/algorithm-derived-data/cprd-ethnicity-records), however additionally applying for this data adds [substantial additional costs](https://www.cprd.com/access-data/pricing) to any project using CPRD data
+
+## Solution
+- CPRD's ethnicity algorithm is derived using ethnicity SNOMED CT codes found in the Observation file of CPRD Aurm and ethnicity category variables found within linked Hospital Episode Statistics (HES) data
+- Therefore if we have access to these datasets we can determine a person's ethnicity without having to pay for additional linked data
+- Below we describe how to generate the ethnicity codelist, algorithm, and final categorical variable for inclusion in your dataset
 
 ## Ethnicity codelist creation
+<details>
+<summary>How we created our ethnicity codelist</summary>
 
 ```mermaid
 flowchart TD
@@ -48,8 +55,13 @@ The [OpenCodelists codelist](https://www.opencodelists.org/codelist/opensafely/e
 - Removed one new synoynm code for being too vague, leaving 11 new codes in total
 
 ### 6. Export codelist
-- **The final codelist including the codes, terms, ethnicity category, and source of each code can be found [here](stata/ethnicity.csv).**
-- Uses the [2001 Census ethnic groupings](https://www.ethnicity-facts-figures.service.gov.uk/style-guide/ethnic-groups/#2001-census):
+- Finished codelist is ready to use!
+- Exported codelist in Stata format and CSV format for easy sharing
+</details>
+
+- Expand the collapsed section above to see how we created our ethnicity codelist
+- **Alternatively download the final codelist including codes, terms, ethnicity category, and source of each code from [here](stata/ethnicity.csv).**
+- It uses the [2001 Census ethnic groupings](https://www.ethnicity-facts-figures.service.gov.uk/style-guide/ethnic-groups/#2001-census):
   - 5-category ethnicity (eth5) labelled as:
     1. White
     1. South Asian
@@ -73,7 +85,7 @@ The [OpenCodelists codelist](https://www.opencodelists.org/codelist/opensafely/e
     1. Other Black
     1. Chinese
     1. Other ethnic group
-- Stata do file to create the ethnicity codelist can be found [here](stata/ethnicity.do).
+- The Stata do file to create the ethnicity codelist is available [here](stata/ethnicity.do).
 
 
 ## Ethnicity codelist use
@@ -97,13 +109,13 @@ G -->|No| I[Person's ethnicity = **most common 2021 England & Wales Census ethni
 5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the [2021 England and Wales Census](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021) is selected  (should be the same as [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
 
 ### Considerations
-- Uses all data available for a patient, therefore may end up looking into the future relative to study period.
+- Uses all data available for a patient, therefore may end up looking into the past or future relative to study period.
 - You may need to make tweaks to the algorithm based on your usage. Consider the impact of missing data.
 
 ### Differences from [CPRD's algorithm](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)
-- No HES data (primary care data only)
-- Different codelist (I am guessing [this](https://static-content.springer.com/esm/art%3A10.1186%2Fs12963-023-00302-0/MediaObjects/12963_2023_302_MOESM3_ESM.docx) is CPRD's codelist (from [Shiekh et al., 2023](https://doi.org/10.1186/s12963-023-00302-0)) but categorisation is not included)
-- CPRD choose the second most commonly recorded ethnic group if "Other" is the most frequently recorded ethnic group. I have not done this because I don't think it is a reasonable thing to do at all.
+- Currently doesn't include HES data (primary care data only), but allows for the inclusion of ethnicity data without the cost of HES or CPRD's derived ethnicity data
+- Very likely to use a different codelist (I am guessing [this](https://static-content.springer.com/esm/art%3A10.1186%2Fs12963-023-00302-0/MediaObjects/12963_2023_302_MOESM3_ESM.docx) is CPRD's codelist (from [Shiekh et al., 2023](https://doi.org/10.1186/s12963-023-00302-0)) but categorisation is not included)
+- CPRD choose the second most commonly recorded ethnic group if "Other" is the most frequently recorded ethnic group. I have not done this because I don't agree with this decision.
 
 ### Data completeness
 Ethnicity completeness was >80% for a cohort of people with severe mentall illness and a cohort of people with dementia
