@@ -105,7 +105,9 @@ G -->|No| I[Person's ethnicity = **most common 2021 England & Wales Census ethni
 2. Merge the long file of all ethnicity codes with the CPRD Aurum Patient file, keeping matches.
 3. Determine most commonly recorded ethnic category for each individual with *no limitation* on date (can be recorded in past or future).
 4. If an individual has 2 or more ethnic groups recorded with the same frequency, the most recently recorded ethnicity (of the most frequently recorded ethnic groups) is chosen, otherwise the most commonly recorded ethnicity is selected as the persons ethicity.
-5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the [2021 England and Wales Census](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021) is selected  (should be the same as [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
+5. If an individual has two equally common ethnic groups recorded on the same day, of those ethnicities the most frequently recorded one in the [2021 England and Wales Census](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021#ethnic-groups-in-england-and-wales) is selected  (should be the same as [CPRD's method](https://www.cprd.com/sites/default/files/2025-09/CPRD_EthnicityRecord_Documentation_v1.2.pdf)).
+
+	![2021 England & Wales Census Ethnicity Category proportions](https://www.ons.gov.uk/visualisations/dvc2203/groupedbarchart/fallback.png)
 
 ### Considerations
 - Uses all data available for a patient, therefore may end up looking into the past or future relative to study period.
