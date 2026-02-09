@@ -11,7 +11,7 @@
 
 ## Ethnicity codelist creation
 <details>
-<summary>How we created our ethnicity codelist</summary>
+<summary>Expand to see how we created our ethnicity codelist</summary>
 
 ```mermaid
 flowchart TD
@@ -59,7 +59,6 @@ The [OpenCodelists codelist](https://www.opencodelists.org/codelist/opensafely/e
 - Exported codelist in Stata format and CSV format for easy sharing
 </details>
 
-- Expand the collapsed section above to see how we created our ethnicity codelist
 - **Alternatively download the final codelist including codes, terms, ethnicity category, and source of each code from [here](stata/ethnicity.csv).**
 - It uses the [2001 Census ethnic groupings](https://www.ethnicity-facts-figures.service.gov.uk/style-guide/ethnic-groups/#2001-census):
   - 5-category ethnicity (eth5) labelled as:
